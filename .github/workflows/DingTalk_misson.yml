@@ -25,12 +25,12 @@ jobs:
         pip install requests pandas 
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
-        tar xvfz ta-lib-0.4.0-src.tar.gz
+        tar -xzvf ta-lib-0.4.0-src.tar.gz
         cd ta-lib
-        ./configure
+        ./configure --prefix=/usr
         make
-        sudo make install
-        pip install talib
+        make install
+        pip install Ta-Lib
     - name: Run misson
       run: |
         python run.py
