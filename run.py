@@ -16,9 +16,9 @@ def fetch_data(symbol, interval, lookback):
         'interval': '1d',
         'limit': 300
     }
-    #response = requests.get(base_url, params=params, proxies=proxy,verify=False)
+    response = requests.get(base_url, params=params, proxies=proxy,verify=False)
     #不使用代理服务器
-    response = requests.get(base_url, params=params, verify=False)
+    #response = requests.get(base_url, params=params, verify=False)
     data = response.json()
     df = pd.DataFrame(data, columns=['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time',
                       'quote_asset_volume', 'number_of_trades', 'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore'])
@@ -43,13 +43,17 @@ def calculate_indicators(data):
 symbol = 'BTCUSDT'
 interval = '1d'
 lookback = 300
+
+print("aaaaaaaaaaaaaaaaaaaaa")
 while True:
     try:
       data = fetch_data(symbol, interval, lookback)
       if len(data):
           rsi = calculate_indicators(data)[-2]
+          print("yyyyyyyyyyyyy")
           break
     except Exception as e:
+        print(type(e).__name__, str(e))
         sleep(20)
 
 dingding_url = 'https://oapi.dingtalk.com/robot/send?access_token=ab74749289f41421b985edc6ef2ec3fe2046badcecd1e2bf4005d699c9a46d11'
