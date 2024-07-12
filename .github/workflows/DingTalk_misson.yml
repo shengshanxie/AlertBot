@@ -30,7 +30,7 @@ jobs:
         ./configure --prefix=/usr
         make
         sudo make install
-        sudo apt upgrade
+        sudo apt-get upgrade
         pip install ta-lib
     - name: Run misson
       run: |
