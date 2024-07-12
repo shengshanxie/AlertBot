@@ -1,66 +1,70 @@
 #python 3.8 
-import time,hmac,hashlib,base64,urllib.parse,sys,requests,json
-from lxml import etree
-def sent_message(text:str,title:str,picUrl:str,messageUrl:str):
-    try:
-        token=sys.argv[1]
-        secret = sys.argv[2]
-    except:
-        print('secret loss')
-    timestamp = str(round(time.time() * 1000))  
-    secret_enc = secret.encode('utf-8')
-    string_to_sign = '{}\n{}'.format(timestamp, secret)
-    string_to_sign_enc = string_to_sign.encode('utf-8')
-    hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
-    sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
-    print(timestamp)
-    print(sign)
-    url="https://oapi.dingtalk.com/robot/send?access_token={2}&timestamp={0}&sign={1}".format(timestamp,sign,token)
-    data={
-        "msgtype": "link", 
-        "link": {
-            "text": text, 
-            "title": title, 
-            "picUrl": picUrl, 
-            "messageUrl": messageUrl
-        }
+import talib,requests,json
+import pandas as pd
+from time import sleep
+from datetime import datetime
+
+def fetch_data(symbol, interval, lookback):
+    base_url = 'https://api.binance.com/api/v3/klines'
+    # 代理服务器的URL
+    proxy = {
+    "http": "http://133.18.234.13:80",
+    "https": "http://160.86.242.23:8080",
+}
+    params = {
+        'symbol': 'BTCUSDT',
+        'interval': '1d',
+        'limit': 300
     }
-    headers={"Content-Type": "application/json"}
-    data=json.dumps(data)
-    rsp=requests.post(url=url,data=data,headers=headers)
-    print(rsp.json().get('errmsg'))
-def get_message():
-    url="https://www.x6d.com/html/34.html"
-    rsp=requests.get(url)
-    s=etree.HTML(rsp.text)
-    s=s.xpath("//li[@class='layui-clear']")
-    print(len(s))
-    urls=[]
-    imgs=[]
-    infos=[]
-    for item in s:
-        x=item.xpath("./div/div[1]/a/@href")
-        img=item.xpath("./div/div[1]/a/img/@src")
-        info_xpath=item.xpath("./div/div[2]/div[1]/text()")
-        urls.append("https://www.x6d.com{}".format(x[0]))
-        imgs.append("https://www.x6d.com{}".format(img[0]))
-        infos.append(info_xpath[0].strip())
-    nowtime=time.time()
-    for url,img,info in zip(urls,imgs,infos):
-        rsp=requests.get(url=url)
-        break_flag=False
-        s=etree.HTML(rsp.text)
-        title=s.xpath("//h1[@class='article-title']")[0].text
-        date=s.xpath("//time")[0].xpath('string(.)')        
-        timeArray = time.strptime(date+":00", "%Y-%m-%d %H:%M:%S")
-        timestamp = time.mktime(timeArray)
-        ac_time=nowtime-timestamp+28800
-        #默认时间频率为两小时，单位秒即7200，可以根据自己需求更改。中国为东八区，比标准时间快8小时。
-        if ac_time<7200 :
-         sent_message(date+"\n"+info,title,img,url)
-         print("log:",date,title,info)
-        else:
-            break_flag=True
-        if break_flag==True:
-            break 
-get_message()
+    #response = requests.get(base_url, params=params, proxies=proxy,verify=False)
+    #不使用代理服务器
+    response = requests.get(base_url, params=params, verify=False)
+    data = response.json()
+    df = pd.DataFrame(data, columns=['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time',
+                      'quote_asset_volume', 'number_of_trades', 'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore'])
+    df['open_time'] = pd.to_datetime(df['open_time'], unit='ms')
+    df.set_index('open_time', inplace=True)
+    df['close'] = df['close'].astype(float)
+    return df
+
+def calculate_indicators(data):
+    close = data['close'].values
+
+    # Calculate MACD
+    #macd, signal, hist = talib.MACD(
+    #    close, fastperiod=12, slowperiod=26, signalperiod=9)
+
+    # Calculate RSI
+    rsi = talib.RSI(close, timeperiod=14)
+
+    #return macd, signal, hist, rsi
+    return rsi
+
+symbol = 'BTCUSDT'
+interval = '1d'
+lookback = 300
+while True:
+    try:
+      data = fetch_data(symbol, interval, lookback)
+      if len(data):
+          rsi = calculate_indicators(data)[-1]
+          break
+    except Exception as e:
+        sleep(20)
+
+dingding_url = 'https://oapi.dingtalk.com/robot/send?access_token=ab74749289f41421b985edc6ef2ec3fe2046badcecd1e2bf4005d699c9a46d11'
+
+data_content = "2024.07.12 BTC RSI(14)="+str(rsi[-1])+"\n"+"发送于"+str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+push_data = {
+    "msgtype":"text",
+    "text":{
+        "content":data_content
+    },
+    "at":{
+        "isAtAll":False
+    }
+}
+headers = {'Content-Type':'application/json;charset=utf-8'}
+
+r=requests.post(dingding_url,headers=headers,data=json.dumps(push_data))
