@@ -72,3 +72,4 @@ push_data = {
 headers = {'Content-Type':'application/json;charset=utf-8'}
 
 r=requests.post(dingding_url,headers=headers,data=json.dumps(push_data))
+print('推送结果',r.json())
