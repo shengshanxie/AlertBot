@@ -30,6 +30,7 @@ jobs:
         ./configure
         make
         sudo make install
+        pip install talib
     - name: Run misson
       run: |
         python run.py
