@@ -5,7 +5,7 @@ name: DingTalk_misson
 
 on:
   schedule:
-    - cron: "50/5 14 * * *"
+    - cron: "05/5 15 * * *"
   #watch:
   #  types: [started]
 jobs:
