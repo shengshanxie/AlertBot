@@ -23,8 +23,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install requests pandas 
-        python3 -m pip install TA-Lib
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+        tar xvfz ta-lib-0.4.0-src.tar.gz
+        cd ta-lib
+        ./configure
+        make
+        sudo make install
     - name: Run misson
       run: |
         python run.py
