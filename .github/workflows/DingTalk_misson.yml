@@ -31,8 +31,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests pandas 
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install wheel
-        pip install TA-Lib
+        pip3 install ta-lib-bin
         
     - name: Run misson
       run: |
