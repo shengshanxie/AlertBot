@@ -6,6 +6,9 @@ name: DingTalk_misson
 on:
   schedule:
     - cron: "0/10 16 * * *"
+  repository_dispatch:
+    types:
+      - webhook1
   #watch:
   #  types: [started]
 jobs:
