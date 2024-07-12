@@ -47,14 +47,14 @@ while True:
     try:
       data = fetch_data(symbol, interval, lookback)
       if len(data):
-          rsi = calculate_indicators(data)[-1]
+          rsi = calculate_indicators(data)[-2]
           break
     except Exception as e:
         sleep(20)
 
 dingding_url = 'https://oapi.dingtalk.com/robot/send?access_token=ab74749289f41421b985edc6ef2ec3fe2046badcecd1e2bf4005d699c9a46d11'
 
-data_content = "2024.07.12 BTC RSI(14)="+str(rsi[-1])+"\n"+"发送于"+str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+data_content = "2024.07.11 BTC RSI(14)="+str(rsi)+"\n"+"发送于"+str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 push_data = {
     "msgtype":"text",
