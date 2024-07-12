@@ -5,9 +5,9 @@ name: DingTalk_misson
 
 on:
   schedule:
-    - cron: "40 14 * * *"
-  watch:
-    types: [started]
+    - cron: "44 14 * * *"
+  #watch:
+  #  types: [started]
 jobs:
   build:
 
