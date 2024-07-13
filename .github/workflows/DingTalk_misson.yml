@@ -4,11 +4,14 @@
 name: DingTalk_misson
 
 on:
-  schedule:
-    - cron: "10/10 4 * * *"
-  repository_dispatch:
-    types:
-      - webhook1
+  issues:
+    types: [opened, edited]
+
+  #schedule:
+  #  - cron: "10/10 4 * * *"
+  #repository_dispatch:
+  #  types:
+   #   - webhook1
   #watch:
   #  types: [started]
 jobs:
