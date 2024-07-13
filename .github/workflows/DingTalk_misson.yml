@@ -4,8 +4,8 @@
 name: DingTalk_misson
 
 on:
-  #schedule:
-  #  - cron: "0/10 2 * * *"
+  schedule:
+    - cron: "10/10 4 * * *"
   repository_dispatch:
     types:
       - webhook1
