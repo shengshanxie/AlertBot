@@ -12,8 +12,8 @@ on:
   #repository_dispatch:
   #  types:
    #   - webhook1
-  #watch:
-  #  types: [started]
+  watch:
+    types: [started]
 jobs:
   build:
 
