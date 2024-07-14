@@ -188,7 +188,7 @@ for symbol,indicators in alert_symbols.items():
         
 dingding_url = 'https://oapi.dingtalk.com/robot/send?access_token=ab74749289f41421b985edc6ef2ec3fe2046badcecd1e2bf4005d699c9a46d11'
 
-data_content = "2024.07.11 BTC RSI(14)="+str(rsi)+"\n"+"发送于"+str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+#data_content = "2024.07.11 BTC RSI(14)="+str(rsi)+"\n"+"发送于"+str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 push_data = {
     "msgtype":"markdown",
