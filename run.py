@@ -19,9 +19,9 @@ def fetch_data(symbol, interval, lookback):
         'interval': interval,
         'limit': lookback
     }
-    #response = requests.get(base_url, params=params, proxies=proxy,verify=False)
+    response = requests.get(base_url, params=params, proxies=proxy,verify=False)
     #不使用代理服务器
-    response = requests.get(base_url, params=params, verify=False)
+    #response = requests.get(base_url, params=params, verify=False)
     data = response.json()
     df = pd.DataFrame(data, columns=['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time',
                       'quote_asset_volume', 'number_of_trades', 'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore'])
