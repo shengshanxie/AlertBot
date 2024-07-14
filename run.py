@@ -1,8 +1,10 @@
 #python 3.8 
 import talib,requests,json
 import pandas as pd
+import numpy as np
 from time import sleep
 from datetime import datetime
+
 
 #--------------计算指标 ------------#
 def fetch_data(symbol, interval, lookback):
