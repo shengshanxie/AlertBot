@@ -71,7 +71,7 @@ for symbol, indicators in symbols.items():
                 print('data')
                 if current_data[-1:].index[0].strftime('%Y-%m-%d')==datetime.now().strftime('%Y-%m-%d'): #前1日已收盘（今日数据已经出现）
                     print('updated')
-                    calculated_date = current_data[-1:].index[0].strftime('%Y-%m-%d')
+                    calculated_date = current_data[-2:-1].index[0].strftime('%Y-%m-%d') 
                     #indicators['macd'], indicators['signal'], indicators['hist'], indicators['rsi14'], indicators['rsi7'] = calculate_indicators(current_data)
                     indicators['rsi14'], indicators['rsi7'] = calculate_indicators(current_data)
                     break
