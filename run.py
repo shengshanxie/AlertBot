@@ -82,7 +82,7 @@ for symbol, indicators in symbols.items():
 #指标
 #预警条件
 rsi_upper = 70.00
-rsi_lower= 60.00
+rsi_lower= 30.00
 
 #alert_indicators['']=[a,b,c]
 #[a,b,c]：a表示指标值，b表示环比（如天级，表示与前一天的变化比例），c表示减去阈值的差值
