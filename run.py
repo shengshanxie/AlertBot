@@ -144,6 +144,14 @@ for symbol, indicators in symbols.items():
         diff_before_rate = round( (indicator_rsi14 - indicator_rsi14_before)/indicator_rsi14_before * 100,2  )
         alert_symbols[symbol]['rsi14']=[indicator_rsi14, diff_before_rate, diff_thr]
 
+#是否超过阈值(1)，超过则推送
+is_over_thr = 0
+for sym,idc in alert_symbols.items():
+    if len(idc)!= 0:
+        is_over_thr=1
+        break
+
+
 #--------------推送通知 ------------#
 #推送内容
 dingding_title = "指标告警"
@@ -203,5 +211,7 @@ push_data = {
 }
 headers = {'Content-Type':'application/json;charset=utf-8'}
 
-r=requests.post(dingding_url,headers=headers,data=json.dumps(push_data))
-print('推送结果',r.json())
+#超过阈值（>0）才推送
+if is_over_thr >0 :
+    r=requests.post(dingding_url,headers=headers,data=json.dumps(push_data))
+    print('推送结果',r.json())
