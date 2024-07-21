@@ -186,7 +186,7 @@ for symbol,indicators in alert_symbols.items():
         if idctr_change_before >0:
             idctr_change_before_desc = '(↑' + str(idctr_change_before) + '%)'
         elif idctr_change_before <0:
-            idctr_change_before_desc = '(↓' + str(idctr_change_before) + '%)'
+            idctr_change_before_desc = '(↓' + str(abs(idctr_change_before)) + '%)'
         else:
             idctr_change_before_desc = '(-)' 
 
